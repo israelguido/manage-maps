@@ -1438,7 +1438,7 @@ class WP_Manage_Maps_Widget extends WP_Widget {
                       }
                       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                   }
-                  
+
                   function codeAddress() {
                       <?php
                       $pdo = new PDO;
@@ -1451,7 +1451,6 @@ class WP_Manage_Maps_Widget extends WP_Widget {
                       }
                       echo "];";
                       ?>
-//                      var address = ['Porra, São Paulo', 'Rio de Janeiro', 'Paraná'];
 
                       for (var i = 0; i < address.length; i++) {
                           geocoder.geocode({ 'address': address[i]}, function (results, status) {
@@ -1464,7 +1463,8 @@ class WP_Manage_Maps_Widget extends WP_Widget {
                                       title: results[0].formatted_address
                                   });
                                   google.maps.event.addListener(marker, 'click', function () {
-                                      console.log(results[0].formatted_address)
+                                      //console.log(results[0].formatted_address)
+                                      document.getElementById('destino').value = results[0].formatted_address;
                                   });
                               } else {
                                   alert('Geocode was not successful for the following reason: ' + status);
@@ -1475,10 +1475,17 @@ class WP_Manage_Maps_Widget extends WP_Widget {
 
                   google.maps.event.addDomListener(window, 'load', initialize);
 
-
               </script>
+              <?php print_r(@$_POST)?>
               <body onload="codeAddress()">
               <div id="map-canvas"></div>
+              <form method="post" action="<?php echo $_SERVER['HTTP_REQUEST'].$_SERVER['REQUEST_URI']?>">
+              <div>
+                  <p><input type="text" name="destino" id="destino"></inpu></p>
+                  <p><input type="text" name="partida" id="partida"></inpu></p>
+              </div>
+                  <input type="submit" value="Traçar"/>
+              </form>
               </body>
     <?php
 
